@@ -1,7 +1,6 @@
-// routes/tasks.js
-const express = require('express');
-const auth = require('../middleware/auth');
-const Task = require('../models/Task');
+import express from 'express';
+import auth from '../middleware/auth.js'; // Add .js extension for ES module
+import Task from '../models/Task.js'; // Add .js extension for ES module
 
 const router = express.Router();
 
@@ -50,4 +49,4 @@ router.post('/:taskId/comment', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router; // Use export default for ES module
