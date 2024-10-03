@@ -1,7 +1,6 @@
-// routes/projects.js
-const express = require('express');
-const auth = require('../middleware/auth');
-const Project = require('../models/Project');
+import express from 'express';
+import auth from '../middleware/auth.js'; // Add .js extension for ES module
+import Project from '../models/Project.js'; // Add .js extension for ES module
 
 const router = express.Router();
 
@@ -35,4 +34,4 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router; // Use export default for ES module
