@@ -1,5 +1,4 @@
-// models/Project.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const ProjectSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -9,4 +8,4 @@ const ProjectSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Project', ProjectSchema);
+export default mongoose.model('Project', ProjectSchema); // Use export default for ES module
