@@ -19,15 +19,9 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-
-// CORS Configuration
-const corsOptions = {
-  origin: 'https://your-frontend-url.com', // Replace with your actual frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true, // Enable this if you're sending cookies or authorization headers
-};
-
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow requests from your local frontend
+}));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -40,7 +34,7 @@ if (process.env.NODE_ENV === 'production') {
   // Get the current directory path
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
-
+  
   const frontendBuildPath = path.join(__dirname, '../asana-frontend/build');
   app.use(express.static(frontendBuildPath)); // Serve static files from the frontend build
 
@@ -54,7 +48,7 @@ if (process.env.NODE_ENV === 'production') {
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: '*', // Update as per your frontend URL
+    origin: '*', // This can be updated based on your needs
   },
 });
 
