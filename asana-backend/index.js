@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path'; // Import path module
+import { fileURLToPath } from 'url'; // Import fileURLToPath
 
 import authRoutes from './routes/authRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
@@ -28,6 +29,10 @@ app.use('/api/notifications', notificationRoutes);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
+  // Get the current directory path
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  
   const frontendBuildPath = path.join(__dirname, '../asana-frontend/build');
   app.use(express.static(frontendBuildPath)); // Serve static files from the frontend build
 
