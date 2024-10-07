@@ -15,9 +15,15 @@ dotenv.config();
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:3000', // Change this to your frontend URL in production
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 // Middleware
 app.use(express.json());
-app.use(cors());
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -27,14 +33,19 @@ app.use('/api/notifications', notificationRoutes);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
-  // Implement serving static files if needed
+  app.use(express.static('client/build')); // Adjust the path as needed
+
+  // Handle React routing, return all requests to React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 }
 
 // Create HTTP server and initialize Socket.io
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: '*', // Update as per your frontend URL
+    origin: 'http://localhost:3000', // Change this to your frontend URL in production
   },
 });
 
@@ -64,4 +75,7 @@ mongoose
       console.log(`Server running on port ${PORT}`);
     });
   })
-  .catch((err) => console.error(err));
+  .catch((err) => {
+    console.error('Database connection error:', err);
+    process.exit(1); // Exit process with failure
+  });
